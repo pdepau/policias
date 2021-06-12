@@ -67,7 +67,7 @@ public class Controller : MonoBehaviour
             {
                 if (Mathf.Abs(fila - columna) == 1 || Mathf.Abs(fila - columna) == 8)
                 {
-                    matriu[columna, fila] = 1;
+                    matriu[fila, columna] = 1;
                 }
                 if(fila%8==0 && fila-columna==1)
                 {
@@ -223,8 +223,8 @@ public class Controller : MonoBehaviour
     public void FindSelectableTiles(bool cop)
     {
                  
-        int indexcurrentTile;        
-
+        int indexcurrentTile;
+ 
         if (cop==true)
             indexcurrentTile = cops[clickedCop].GetComponent<CopMove>().currentTile;
         else
@@ -236,14 +236,52 @@ public class Controller : MonoBehaviour
         //Cola para el BFS
         Queue<Tile> nodes = new Queue<Tile>();
 
-        //TODO: Implementar BFS. Los nodos seleccionables los ponemos como selectable=true
-        //Tendrás que cambiar este código por el BFS
-        for(int i = 0; i < Constants.NumTiles; i++)
+        for(int i=0; i <= tiles.Length-1; i++)
         {
-            tiles[i].selectable = true;
+            tiles[i].distance = 999;
         }
 
+        tiles[indexcurrentTile].distance = 0;
+        tiles[indexcurrentTile].visited = true;
+        nodes.Enqueue(tiles[indexcurrentTile]);
 
+        while (nodes.Count > 0)
+        {
+            Tile auxiliar = nodes.Dequeue();
+            foreach (int adyacente in auxiliar.adjacency)
+            {
+                if (tiles[adyacente].visited == false)
+                {
+                    bool libre = true;
+                    if (cops[0].GetComponent<CopMove>().currentTile == adyacente)
+                    {
+                        libre = false;
+                    }
+                    if (cops[1].GetComponent<CopMove>().currentTile == adyacente)
+                    {
+                        libre = false;
+                    }
+                    if (libre == false)
+                    {
+                        tiles[adyacente].distance = 3;
+                        tiles[adyacente].visited = true;
+                    }
+                    else
+                    {
+                        tiles[adyacente].distance = auxiliar.distance + 1;
+                        tiles[adyacente].visited = true;
+                        nodes.Enqueue(tiles[adyacente]);
+                    }
+                }
+            }
+        }
+        for(int i=0; i < Constants.NumTiles; i++)
+        {
+            if (tiles[i].distance <= 2)
+            {
+                tiles[i].selectable = true;
+            }
+        }
     }
     
    
