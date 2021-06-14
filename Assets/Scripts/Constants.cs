@@ -11,7 +11,7 @@ public class Constants
     public const int InitialCop1 = 0;
     public const int InitialRobber = 60;
     public const int Distance = 2;
-    public const int MaxRounds = 10;
+    public const int MaxRounds = 100;
     public const int MoveSpeed = 2;
     public const int EndSpeed = 4;
 

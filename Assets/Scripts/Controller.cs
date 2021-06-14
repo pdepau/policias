@@ -179,7 +179,20 @@ public class Controller : MonoBehaviour
         - Movemos al caco a esa casilla
         - Actualizamos la variable currentTile del caco a la nueva casilla
         */
-        robber.GetComponent<RobberMove>().MoveToTile(tiles[robber.GetComponent<RobberMove>().currentTile]);
+        List<int> alcanzables = new List<int>();
+        for(int i = 0; i <= Constants.NumTiles - 1; i++) {
+            Debug.Log("entro" + i);
+            Debug.Log(tiles[i].selectable);
+            if (tiles[i].selectable == true) 
+            {
+                alcanzables.Add(tiles[i].numTile);
+                Debug.Log(alcanzables.Count);
+            }
+        }
+        int num = Random.Range(0,alcanzables.Count-1);
+        Debug.Log(num);
+        robber.GetComponent<RobberMove>().MoveToTile(tiles[alcanzables[num]]);
+        robber.GetComponent<RobberMove>().currentTile = tiles[alcanzables[num]].numTile;
     }
 
     public void EndGame(bool end)
@@ -238,7 +251,7 @@ public class Controller : MonoBehaviour
 
         for(int i=0; i <= tiles.Length-1; i++)
         {
-            tiles[i].distance = 999;
+            tiles[i].distance = 3;
         }
 
         tiles[indexcurrentTile].distance = 0;
