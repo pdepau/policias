@@ -249,10 +249,7 @@ public class Controller : MonoBehaviour
         //Cola para el BFS
         Queue<Tile> nodes = new Queue<Tile>();
 
-        for(int i=0; i <= tiles.Length-1; i++)
-        {
-            tiles[i].distance = 3;
-        }
+       
 
         tiles[indexcurrentTile].distance = 0;
         tiles[indexcurrentTile].visited = true;
@@ -295,6 +292,7 @@ public class Controller : MonoBehaviour
                 tiles[i].selectable = true;
             }
         }
+        tiles[indexcurrentTile].selectable = false;
     }
     
    
